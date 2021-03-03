@@ -2,11 +2,11 @@
 #include <iostream>
 using namespace std;
 
-int** Allocate(const int m,const int n);	//Выделяет память под динамический массив
+template <typename T> T** Allocate(const int m,const int n);	//Выделяет память под динамический массив
 void FillRand(int** arr, const int m, const int n);//Заполнение массива случайными числами
 void Print(int** arr, const int m, const int n);//Печать двумерного массива
-void Clear(int** arr, const int m);		//Удаляет динамический массив
-int** Push_row_back(int** arr, int& m, const int n);	//Добавляет строку в конец ДДМ
+template <typename T> void Clear(T** arr, const int m);		//Удаляет динамический массив
+template <typename T> T** Push_row_back(T** arr, int& m, const int n);	//Добавляет строку в конец ДДМ
 int** Push_row_front(int** arr, int& m, const int n);//Добавляет строку в начало ДДМ
 int** insert_row(int** arr, int& m, const int n, int index);//Вставляет строку в двумерный динамический массив по индексу
 int** pop_row_back(int** arr, int& m, const int n);	//Удаляет строку с конца ДДМ
@@ -100,12 +100,12 @@ int main()
 
 
 
-int** Allocate(const int m, const int n)
+template <typename T> T** Allocate(const int m, const int n)
 {
-	int** arr = new int* [m];
+	T** arr = new T* [m];
 	for (int i = 0; i < m; i++)
 	{
-		arr[i] = new int[n] {};
+		arr[i] = new T[n] {};
 	}
 	return arr;
 }
@@ -134,7 +134,7 @@ void Print(int** arr, const int m, const int n)
 
 }
 
-void Clear(int** arr, const int m)
+template <typename T> void Clear(T** arr, const int m)
 {
 	for (int i = 0; i < m; i++)
 	{
@@ -143,9 +143,9 @@ void Clear(int** arr, const int m)
 	delete[] arr;
 }
 
-int** Push_row_back(int** arr, int& m, const int n)
+template <typename T> T** Push_row_back(T** arr, int& m, const int n)
 {
-	int** buffer = Allocate(m + 1, n);
+	T** buffer = Allocate(m + 1, n);
 	for (int i = 0; i < m; i++)
 	{
 		for (int j = 0; j < n; j++)
