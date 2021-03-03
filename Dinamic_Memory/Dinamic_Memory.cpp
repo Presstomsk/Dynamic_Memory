@@ -22,6 +22,12 @@ int** insert_row(int** arr, int& m, const int n, int index);//Вставляет
 int** pop_row_back(int** arr, int& m, const int n);	//Удаляет строку с конца ДДМ
 int** pop_row_front(int** arr, int& m, const int n);	//Удаляет строку с начала ДДМ
 int** erase_row(int** arr, int& m, const int n, int index);	//Удаляет строку по указанному индексу
+int** push_col_back(int** arr, const int m, int& n);	//Добавляет столбец в конец ДДМ
+int** push_col_front(int** arr, const int m, int& n);//Добавляет столбец в начало ДДМ
+int** insert_col(int** arr, const int m, int& n, int index);	//Вставляет столбец по указанному индексу
+int** pop_col_back(int** arr, const int m, int& n);	//Удаляет столбец в конце ДДМ
+int** pop_col_front(int** arr, const int m, int& n); //Удаляет столбец в начале ДДМ
+int** erase_col(int** arr, const int m, int& n, int index);	//Удаляет столбец по указанному индексу
 
 int main()
 {
@@ -29,10 +35,10 @@ int main()
 	int n,m;
 	cout << "Введите размер массива: "; cin >> n;
 	int* arr = new int[n] {};
-	/*FillRand(arr,n);
-	Print(arr,n);*/
+	FillRand(arr,n);
+	Print(arr,n);
 	int value, index;
-	/*cout << "введите добавляемое значение: "; cin >> value;
+	cout << "введите добавляемое значение: "; cin >> value;
 	arr=push_back(arr, n, value);
 	Print(arr, n);
 	cout << "введите добавляемое значение: "; cin >> value;
@@ -50,7 +56,7 @@ int main()
 	Print(arr, n);
 	cout << "введите индекс удаляемого элемента: "; cin >> index;
 	arr = erase(arr,n,index);
-	Print(arr, n);*/
+	Print(arr, n);
 	delete[] arr;
 	/*Двумерный массив и операции с ним*/
 	cout << "Введите количество строк: "; cin >> m;
@@ -92,14 +98,39 @@ int main()
 	arr_2 = erase_row(arr_2, m, n, index);
 	Print(arr_2, m, n);
 	cout << endl;
+	cout << "Добавление столбца в конец ДДМ: " << endl;
+	cout << endl;
+	arr_2 = push_col_back(arr_2, m, n);
+	Print(arr_2, m, n);
+	cout << endl;
+	cout << "Добавление столбца в начало ДДМ: " << endl;
+	cout << endl;
+	arr_2 = push_col_front(arr_2, m, n);
+	Print(arr_2, m, n);
+	cout << endl;
+	cout << "Введите индекс добавляемого столбца: "; cin >> index;
+	cout << "Добавление столбца по индексу в ДДМ: " << endl;
+	cout << endl;
+	arr_2 = insert_col(arr_2, m, n, index);
+	Print(arr_2, m, n);
+	cout << endl;
+	cout << "Удаление столбца в конце ДДМ: " << endl;
+	cout << endl;
+	arr_2 = pop_col_back(arr_2, m, n);
+	Print(arr_2, m, n);
+	cout << endl;
+	cout << "Удаление столбца в начале ДДМ: " << endl;
+	cout << endl;
+	arr_2 = pop_col_front(arr_2, m, n);
+	Print(arr_2, m, n);
+	cout << endl;
+	cout << "Введите индекс удаляемого столбца: "; cin >> index;
+	cout << "Удаление столбца по индексу в ДДМ: " << endl;
+	cout << endl;
+	arr_2 = erase_col(arr_2, m, n, index);
+	Print(arr_2, m, n);
+	cout << endl;
 	Clear(arr_2,m);
-	
-	
-
-
-
-    
-
 }
 
 void FillRand(int arr[], const int n)
@@ -356,5 +387,120 @@ int** erase_row(int** arr, int& m, const int n, int index)
 		}
 	}
 	Clear(arr, m + 1);
+	return buffer;
+}
+
+int** push_col_back(int** arr, const int m, int& n)
+{
+	int** buffer = Allocate(m, n+1);
+	for (int i = 0; i < m; i++)
+	{
+		for (int j = 0; j < n; j++)
+		{
+			buffer[i][j] = arr[i][j];
+		}
+	}
+
+	for (int i = 0; i < m; i++)
+	{
+		buffer[i][n] = rand() % 100;
+	}
+	Clear(arr, m);
+	n++;
+	return buffer;
+}
+
+int** push_col_front(int** arr, const int m, int& n)
+{
+	int** buffer = Allocate(m, n+1);
+	for (int i = 0; i < m; i++)
+	{
+		for (int j = 1; j < n+1; j++)
+		{
+			buffer[i][j] = arr[i][j-1];
+		}
+	}
+	for (int i = 0; i < m; i++)
+	{
+		buffer[i][0] = rand() % 100;
+	}
+
+	Clear(arr, m);
+	n++;
+	return buffer;
+}
+
+int** insert_col(int** arr, const int m, int& n, int index)
+{
+	int** buffer = Allocate(m, ++n);
+	for (int i = 0; i < m; i++)
+	{
+		for (int j = 0; j < index; j++)
+		{
+			buffer[i][j] = arr[i][j];
+		}
+	}
+	for (int i = 0; i < m; i++)
+	{
+		buffer[i][index] = rand() % 100;
+	}
+	for (int i = 0; i < m; i++)
+	{
+		for (int j = index + 1; j < n; j++)
+		{
+			buffer[i][j] = arr[i][j-1];
+		}
+	}
+	Clear(arr, m);
+	return buffer;
+}
+
+int** pop_col_back(int** arr, const int m, int& n)
+{
+	int** buffer = Allocate(m, --n);
+	for (int i = 0; i < m; i++)
+	{
+		for (int j = 0; j < n; j++)
+		{
+			buffer[i][j] = arr[i][j];
+		}
+	}
+	Clear(arr, m);
+	return buffer;
+}
+
+int** pop_col_front(int** arr, const int m, int& n)
+{
+	int** buffer = Allocate(m, --n);
+	for (int i = 0; i < m; i++)
+	{
+		for (int j = 0; j < n; j++)
+		{
+			buffer[i][j] = arr[i][j+1];
+		}
+	}
+	Clear(arr, m);
+	return buffer;
+}
+
+int** erase_col(int** arr, const int m, int& n, int index)
+{
+	int** buffer = Allocate(m, --n);
+	for (int i = 0; i < m; i++)
+	{
+		for (int j = 0; j < index; j++)
+		{
+			buffer[i][j] = arr[i][j];
+		}
+	}
+
+	for (int i = 0; i < m; i++)
+	{
+		for (int j = index; j < n; j++)
+		{
+			buffer[i][j] = arr[i][j+1];
+		}
+	}
+	Clear(arr, m);
 	return buffer;
 }
