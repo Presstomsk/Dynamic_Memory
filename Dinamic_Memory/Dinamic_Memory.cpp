@@ -2,7 +2,7 @@
 #include <iostream>
 using namespace std;
 
-template <typename T> T** Allocate(T** arr, const int m,const int n);	//Выделяет память под динамический массив
+template <typename T> T** Allocate(const int m,const int n);	//Выделяет память под динамический массив
 void FillRand(int** arr, const int m, const int n);//Заполнение массива случайными числами
 template <typename T> void Print(T** arr, const int m, const int n);//Печать двумерного массива
 template <typename T> void Clear(T** arr, const int m);		//Удаляет динамический массив
@@ -27,8 +27,7 @@ int main()
 	cout << "Введите количество строк: "; cin >> m;
 	cout << "Введите количество элементов строки: "; cin >> n;
 	cout << endl;
-	int** arr_2 = new int* [m];
-	Allocate(arr_2, m, n);
+	int** arr_2 = Allocate <int> (m, n);
 	FillRand(arr_2, m, n);
 	Print(arr_2,m,n);
 	cout << endl;
@@ -101,8 +100,9 @@ int main()
 
 
 
-template <typename T> T** Allocate(T** arr, const int m, const int n)
+template <typename T> T** Allocate(const int m, const int n)
 {
+	T** arr = new T * [m];
 	for (int i = 0; i < m; i++)
 	{
 		arr[i] = new T[n] {};
@@ -145,8 +145,7 @@ template <typename T> void Clear(T** arr, const int m)
 
 template <typename T> T** Push_row_back(T** arr, int& m, const int n)
 {
-	T** buffer = new T * [m + 1];
-	Allocate(buffer,m + 1, n);
+	T** buffer = Allocate <T>(m + 1, n);
 	for (int i = 0; i < m; i++)
 	{
 		for (int j = 0; j < n; j++)
@@ -166,8 +165,7 @@ template <typename T> T** Push_row_back(T** arr, int& m, const int n)
 
 template <typename T> T** Push_row_front(T** arr, int& m, const int n)
 {
-	T** buffer = new T * [m + 1];
-	Allocate(buffer, m + 1, n);
+	T** buffer = Allocate <T> (m + 1, n);
 	for (int i = 1; i < m+1; i++)
 	{
 		for (int j = 0; j < n; j++)
@@ -187,8 +185,7 @@ template <typename T> T** Push_row_front(T** arr, int& m, const int n)
 
 template <typename T> T** insert_row(T** arr, int& m, const int n, int index)
 {
-	T** buffer = new T * [++m];
-	Allocate(buffer, m, n);
+	T** buffer = Allocate <T>(++m, n);
 	for (int i = 0; i < index; i++)
 	{
 		for (int j = 0; j < n; j++)
@@ -213,8 +210,7 @@ template <typename T> T** insert_row(T** arr, int& m, const int n, int index)
 
 template <typename T> T** pop_row_back(T** arr, int& m, const int n)
 {
-	T** buffer = new T * [--m];
-	Allocate(buffer, m, n);
+	T** buffer =Allocate <T>(--m, n);
 	for (int i = 0; i < m; i++)
 	{
 		for (int j = 0; j < n; j++)
@@ -228,8 +224,7 @@ template <typename T> T** pop_row_back(T** arr, int& m, const int n)
 
 template <typename T> T** pop_row_front(T** arr, int& m, const int n)
 {
-	T** buffer = new T * [--m];
-	Allocate(buffer, m, n);
+	T** buffer = Allocate <T>(--m, n);
 	for (int i = 0; i < m; i++)
 	{
 		for (int j = 0; j < n; j++)
@@ -243,8 +238,7 @@ template <typename T> T** pop_row_front(T** arr, int& m, const int n)
 
 template <typename T> T** erase_row(T** arr, int& m, const int n, int index)
 {
-	T** buffer = new T * [--m];
-	Allocate(buffer, m, n);
+	T** buffer = Allocate <T>(--m, n);
 	for (int i = 0; i < index; i++)
 	{
 		for (int j = 0; j < n; j++)
@@ -266,8 +260,7 @@ template <typename T> T** erase_row(T** arr, int& m, const int n, int index)
 
 template <typename T> T** push_col_back(T** arr, const int m, int& n)
 {
-	T** buffer = new T * [m];
-	Allocate(buffer, m, n+1);
+	T** buffer = Allocate <T>(m, n+1);
 	for (int i = 0; i < m; i++)
 	{
 		for (int j = 0; j < n; j++)
@@ -287,8 +280,7 @@ template <typename T> T** push_col_back(T** arr, const int m, int& n)
 
 template <typename T> T** push_col_front(T** arr, const int m, int& n)
 {
-	T** buffer = new T * [m];
-	Allocate(buffer, m, n+1);
+	T** buffer = Allocate <T>(m, n + 1);
 	for (int i = 0; i < m; i++)
 	{
 		for (int j = 1; j < n+1; j++)
@@ -308,8 +300,7 @@ template <typename T> T** push_col_front(T** arr, const int m, int& n)
 
 template <typename T> T** insert_col(T** arr, const int m, int& n, int index)
 {
-	T** buffer = new T * [m];
-	Allocate(buffer, m, ++n);
+	T** buffer = Allocate <T>(m, ++n);
 	for (int i = 0; i < m; i++)
 	{
 		for (int j = 0; j < index; j++)
@@ -334,8 +325,7 @@ template <typename T> T** insert_col(T** arr, const int m, int& n, int index)
 
 template <typename T> T** pop_col_back(T** arr, const int m, int& n)
 {
-	T** buffer = new T * [m];
-	Allocate(buffer, m, --n);
+	T** buffer = Allocate <T>(m, --n);
 	for (int i = 0; i < m; i++)
 	{
 		for (int j = 0; j < n; j++)
@@ -349,8 +339,7 @@ template <typename T> T** pop_col_back(T** arr, const int m, int& n)
 
 template <typename T> T** pop_col_front(T** arr, const int m, int& n)
 {
-	T** buffer = new T * [m];
-	Allocate(buffer, m, --n);
+	T** buffer = Allocate <T>(m, --n);
 	for (int i = 0; i < m; i++)
 	{
 		for (int j = 0; j < n; j++)
@@ -364,8 +353,7 @@ template <typename T> T** pop_col_front(T** arr, const int m, int& n)
 
 template <typename T> T** erase_col(T** arr, const int m, int& n, int index)
 {
-	T** buffer = new T * [m];
-	Allocate(buffer, m, --n);
+	T** buffer = Allocate <T>(m, --n);
 	for (int i = 0; i < m; i++)
 	{
 		for (int j = 0; j < index; j++)
