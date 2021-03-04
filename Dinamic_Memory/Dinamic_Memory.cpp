@@ -2,22 +2,22 @@
 #include <iostream>
 using namespace std;
 
-template <typename T> T** Allocate(const int m,const int n);	//Выделяет память под динамический массив
+template <typename T> T** Allocate(T** arr, const int m,const int n);	//Выделяет память под динамический массив
 void FillRand(int** arr, const int m, const int n);//Заполнение массива случайными числами
-void Print(int** arr, const int m, const int n);//Печать двумерного массива
+template <typename T> void Print(T** arr, const int m, const int n);//Печать двумерного массива
 template <typename T> void Clear(T** arr, const int m);		//Удаляет динамический массив
 template <typename T> T** Push_row_back(T** arr, int& m, const int n);	//Добавляет строку в конец ДДМ
-int** Push_row_front(int** arr, int& m, const int n);//Добавляет строку в начало ДДМ
-int** insert_row(int** arr, int& m, const int n, int index);//Вставляет строку в двумерный динамический массив по индексу
-int** pop_row_back(int** arr, int& m, const int n);	//Удаляет строку с конца ДДМ
-int** pop_row_front(int** arr, int& m, const int n);	//Удаляет строку с начала ДДМ
-int** erase_row(int** arr, int& m, const int n, int index);	//Удаляет строку по указанному индексу
-int** push_col_back(int** arr, const int m, int& n);	//Добавляет столбец в конец ДДМ
-int** push_col_front(int** arr, const int m, int& n);//Добавляет столбец в начало ДДМ
-int** insert_col(int** arr, const int m, int& n, int index);	//Вставляет столбец по указанному индексу
-int** pop_col_back(int** arr, const int m, int& n);	//Удаляет столбец в конце ДДМ
-int** pop_col_front(int** arr, const int m, int& n); //Удаляет столбец в начале ДДМ
-int** erase_col(int** arr, const int m, int& n, int index);	//Удаляет столбец по указанному индексу
+template <typename T> T** Push_row_front(T** arr, int& m, const int n);//Добавляет строку в начало ДДМ
+template <typename T> T** insert_row(T** arr, int& m, const int n, int index);//Вставляет строку в двумерный динамический массив по индексу
+template <typename T> T** pop_row_back(T** arr, int& m, const int n);	//Удаляет строку с конца ДДМ
+template <typename T> T** pop_row_front(T** arr, int& m, const int n);	//Удаляет строку с начала ДДМ
+template <typename T> T** erase_row(T** arr, int& m, const int n, int index);	//Удаляет строку по указанному индексу
+template <typename T> T** push_col_back(T** arr, const int m, int& n);	//Добавляет столбец в конец ДДМ
+template <typename T> T** push_col_front(T** arr, const int m, int& n);//Добавляет столбец в начало ДДМ
+template <typename T> T** insert_col(T** arr, const int m, int& n, int index);	//Вставляет столбец по указанному индексу
+template <typename T> T** pop_col_back(T** arr, const int m, int& n);	//Удаляет столбец в конце ДДМ
+template <typename T> T** pop_col_front(T** arr, const int m, int& n); //Удаляет столбец в начале ДДМ
+template <typename T> T** erase_col(T** arr, const int m, int& n, int index);	//Удаляет столбец по указанному индексу
 
 int main()
 {
@@ -27,7 +27,8 @@ int main()
 	cout << "Введите количество строк: "; cin >> m;
 	cout << "Введите количество элементов строки: "; cin >> n;
 	cout << endl;
-	int** arr_2 = Allocate(m, n);
+	int** arr_2 = new int* [m];
+	Allocate(arr_2, m, n);
 	FillRand(arr_2, m, n);
 	Print(arr_2,m,n);
 	cout << endl;
@@ -100,9 +101,8 @@ int main()
 
 
 
-template <typename T> T** Allocate(const int m, const int n)
+template <typename T> T** Allocate(T** arr, const int m, const int n)
 {
-	T** arr = new T* [m];
 	for (int i = 0; i < m; i++)
 	{
 		arr[i] = new T[n] {};
@@ -121,7 +121,7 @@ void FillRand(int** arr, const int m, const int n)
 	}
 }
 
-void Print(int** arr, const int m, const int n)
+template <typename T> void Print(T** arr, const int m, const int n)
 {
 	for (int i = 0; i < m; i++)
 	{
@@ -145,7 +145,8 @@ template <typename T> void Clear(T** arr, const int m)
 
 template <typename T> T** Push_row_back(T** arr, int& m, const int n)
 {
-	T** buffer = Allocate(m + 1, n);
+	T** buffer = new T * [m + 1];
+	Allocate(buffer,m + 1, n);
 	for (int i = 0; i < m; i++)
 	{
 		for (int j = 0; j < n; j++)
@@ -163,9 +164,10 @@ template <typename T> T** Push_row_back(T** arr, int& m, const int n)
 	return buffer;
 }
 
-int** Push_row_front(int** arr, int& m, const int n)
+template <typename T> T** Push_row_front(T** arr, int& m, const int n)
 {
-	int** buffer = Allocate(m + 1, n);
+	T** buffer = new T * [m + 1];
+	Allocate(buffer, m + 1, n);
 	for (int i = 1; i < m+1; i++)
 	{
 		for (int j = 0; j < n; j++)
@@ -183,9 +185,10 @@ int** Push_row_front(int** arr, int& m, const int n)
 	return buffer;
 }
 
-int** insert_row(int** arr, int& m, const int n, int index)
+template <typename T> T** insert_row(T** arr, int& m, const int n, int index)
 {
-	int** buffer = Allocate(++m, n);
+	T** buffer = new T * [++m];
+	Allocate(buffer, m, n);
 	for (int i = 0; i < index; i++)
 	{
 		for (int j = 0; j < n; j++)
@@ -208,9 +211,10 @@ int** insert_row(int** arr, int& m, const int n, int index)
 	return buffer;
 }
 
-int** pop_row_back(int** arr, int& m, const int n)
+template <typename T> T** pop_row_back(T** arr, int& m, const int n)
 {
-	int** buffer = Allocate(--m, n);
+	T** buffer = new T * [--m];
+	Allocate(buffer, m, n);
 	for (int i = 0; i < m; i++)
 	{
 		for (int j = 0; j < n; j++)
@@ -222,9 +226,10 @@ int** pop_row_back(int** arr, int& m, const int n)
 	return buffer;
 }
 
-int** pop_row_front(int** arr, int& m, const int n)
+template <typename T> T** pop_row_front(T** arr, int& m, const int n)
 {
-	int** buffer = Allocate(--m, n);
+	T** buffer = new T * [--m];
+	Allocate(buffer, m, n);
 	for (int i = 0; i < m; i++)
 	{
 		for (int j = 0; j < n; j++)
@@ -236,9 +241,10 @@ int** pop_row_front(int** arr, int& m, const int n)
 	return buffer;
 }
 
-int** erase_row(int** arr, int& m, const int n, int index)
+template <typename T> T** erase_row(T** arr, int& m, const int n, int index)
 {
-	int** buffer = Allocate(--m, n);
+	T** buffer = new T * [--m];
+	Allocate(buffer, m, n);
 	for (int i = 0; i < index; i++)
 	{
 		for (int j = 0; j < n; j++)
@@ -258,9 +264,10 @@ int** erase_row(int** arr, int& m, const int n, int index)
 	return buffer;
 }
 
-int** push_col_back(int** arr, const int m, int& n)
+template <typename T> T** push_col_back(T** arr, const int m, int& n)
 {
-	int** buffer = Allocate(m, n+1);
+	T** buffer = new T * [m];
+	Allocate(buffer, m, n+1);
 	for (int i = 0; i < m; i++)
 	{
 		for (int j = 0; j < n; j++)
@@ -278,9 +285,10 @@ int** push_col_back(int** arr, const int m, int& n)
 	return buffer;
 }
 
-int** push_col_front(int** arr, const int m, int& n)
+template <typename T> T** push_col_front(T** arr, const int m, int& n)
 {
-	int** buffer = Allocate(m, n+1);
+	T** buffer = new T * [m];
+	Allocate(buffer, m, n+1);
 	for (int i = 0; i < m; i++)
 	{
 		for (int j = 1; j < n+1; j++)
@@ -298,9 +306,10 @@ int** push_col_front(int** arr, const int m, int& n)
 	return buffer;
 }
 
-int** insert_col(int** arr, const int m, int& n, int index)
+template <typename T> T** insert_col(T** arr, const int m, int& n, int index)
 {
-	int** buffer = Allocate(m, ++n);
+	T** buffer = new T * [m];
+	Allocate(buffer, m, ++n);
 	for (int i = 0; i < m; i++)
 	{
 		for (int j = 0; j < index; j++)
@@ -323,9 +332,10 @@ int** insert_col(int** arr, const int m, int& n, int index)
 	return buffer;
 }
 
-int** pop_col_back(int** arr, const int m, int& n)
+template <typename T> T** pop_col_back(T** arr, const int m, int& n)
 {
-	int** buffer = Allocate(m, --n);
+	T** buffer = new T * [m];
+	Allocate(buffer, m, --n);
 	for (int i = 0; i < m; i++)
 	{
 		for (int j = 0; j < n; j++)
@@ -337,9 +347,10 @@ int** pop_col_back(int** arr, const int m, int& n)
 	return buffer;
 }
 
-int** pop_col_front(int** arr, const int m, int& n)
+template <typename T> T** pop_col_front(T** arr, const int m, int& n)
 {
-	int** buffer = Allocate(m, --n);
+	T** buffer = new T * [m];
+	Allocate(buffer, m, --n);
 	for (int i = 0; i < m; i++)
 	{
 		for (int j = 0; j < n; j++)
@@ -351,9 +362,10 @@ int** pop_col_front(int** arr, const int m, int& n)
 	return buffer;
 }
 
-int** erase_col(int** arr, const int m, int& n, int index)
+template <typename T> T** erase_col(T** arr, const int m, int& n, int index)
 {
-	int** buffer = Allocate(m, --n);
+	T** buffer = new T * [m];
+	Allocate(buffer, m, --n);
 	for (int i = 0; i < m; i++)
 	{
 		for (int j = 0; j < index; j++)
